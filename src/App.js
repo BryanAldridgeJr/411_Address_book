@@ -1,3 +1,45 @@
+import React, { useState, useEffect } from 'react';
+import './App.css';
+import InfoCard from './InfoCard';
+
+function App() {
+  const [arrayOfInfo, setArrayOfInfo] = useState([]);
+
+  useEffect(() => {
+    fetch('https://randomuser.me/api?results=25')
+      .then(response => response.json())
+      .then(data => setArrayOfInfo(data.results));
+  }, []);
+
+  const handleClick = (index) => {
+    setArrayOfInfo((prevArray) => {
+      const updatedInfo = prevArray.map((info, i) =>
+        i === index ? { ...info, showDetails: !info.showDetails } : info
+      );
+      return updatedInfo;
+    });
+  };
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <ol>
+          {arrayOfInfo.map((info, index) => (
+            <InfoCard
+              key={index}
+              index={index}
+              info={info}
+              handleClick={() => handleClick(index)}
+            />
+          ))}
+        </ol>
+      </header>
+    </div>
+  );
+}
+
+export default App;
+
 /*
 import React, { useState, useEffect } from 'react';
 import './App.css';
@@ -62,47 +104,5 @@ function App() {
 }
 
 export default App;*/
-
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import InfoCard from './InfoCard';
-
-function App() {
-  const [arrayOfInfo, setArrayOfInfo] = useState([]);
-
-  useEffect(() => {
-    fetch('https://randomuser.me/api?results=25')
-      .then(response => response.json())
-      .then(data => setArrayOfInfo(data.results));
-  }, []);
-
-  const handleClick = (index) => {
-    setArrayOfInfo((prevArray) => {
-      const updatedInfo = prevArray.map((info, i) =>
-        i === index ? { ...info, showDetails: !info.showDetails } : info
-      );
-      return updatedInfo;
-    });
-  };
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <ol>
-          {arrayOfInfo.map((info, index) => (
-            <InfoCard
-              key={index}
-              index={index}
-              info={info}
-              handleClick={() => handleClick(index)}
-            />
-          ))}
-        </ol>
-      </header>
-    </div>
-  );
-}
-
-export default App;
 
 
